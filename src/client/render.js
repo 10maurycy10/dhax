@@ -41,7 +41,7 @@ window.render = () => {
 				ctx.fillStyle = 'black';
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle'
-				ctx.fillText(player.name, pos.x, pos.y - player.radius * 1.5)
+				ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y - player.radius * 1.5)
 			}
 			ctx.globalAlpha = 1
 		}
@@ -215,7 +215,7 @@ window.render = () => {
 			ctx.textBaseline = 'middle'
 			ctx.font = `22px ${window.font}`
 			if (!player.dying) {
-				ctx.fillText(`${player.name}`, pos.x, pos.y + player.radius * 1.5)
+				ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y + player.radius * 1.5)
 			}
 
 			if (player.chatMessageTimer > 0) {
