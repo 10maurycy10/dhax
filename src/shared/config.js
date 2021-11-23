@@ -7,7 +7,7 @@ if (global.config_instance) {
         ADDRESS: "wss://darrows-testing.herokuapp.com",
     }
 
-    for (key in Object.keys(process.env)) {
+    for (key of Object.keys(process.env)) {
         if (vars.hasOwnProperty(key)) {
             vars[key] = JSON.parse(process.env[key])
         }
