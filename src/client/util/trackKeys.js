@@ -1,3 +1,11 @@
+function haxMessage(text) {
+    const div = document.createElement('div');
+    div.classList.add('chat-message');
+    div.innerHTML = `<span class="rainbow">[HAX]</span> ${text.safe()}`;
+    ref.chatMessageDiv.appendChild(div)
+    ref.chatMessageDiv.scrollTop = ref.chatMessageDiv.scrollHeight;
+}
+
 function trackKeys(event) {
 	if (event.repeat && !chatOpen) return event.preventDefault();
 	if (event.code === 'Enter') {
@@ -17,7 +25,7 @@ function trackKeys(event) {
 					//   idiotmusic.src = "./sounds/idiotmusic.mp3";
 					//   idiotmusic.play();
 					// }
-                    if (!hax_command(ref.chat.value))
+                    if (!hax_command(ref.chat.value,haxMessage))
                         send({ chat: ref.chat.value })
 				}
 			}
