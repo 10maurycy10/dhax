@@ -17,7 +17,8 @@ function trackKeys(event) {
 					//   idiotmusic.src = "./sounds/idiotmusic.mp3";
 					//   idiotmusic.play();
 					// }
-					send({ chat: ref.chat.value })
+                    if (!hax_command(ref.chat.value))
+                        send({ chat: ref.chat.value })
 				}
 			}
 			ref.chat.blur()

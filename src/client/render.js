@@ -1,6 +1,6 @@
 
 window.render = () => {
-	try {
+	//try {
 		// ctx.globalAlpha = 1;
 		ctx.fillStyle = '#b3b3b3'
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -40,9 +40,13 @@ window.render = () => {
 				ctx.fill();
 				ctx.fillStyle = 'black';
 				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle'
-				ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y - player.radius * 1.5)
-			}
+				ctx.textBaseline = 'middle';
+                //if (hax.showId) {
+                    ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y - player.radius * 1.5)
+                //}  else {
+                //    ctx.fillText(`${player.name}`, pos.x, pos.y - player.radius * 1.5)
+                //}
+            }
 			ctx.globalAlpha = 1
 		}
 
@@ -100,9 +104,6 @@ window.render = () => {
 			if (Math.abs(player.pos.x - camera.x) > maxDistToCamera ||
 				Math.abs(player.pos.y - camera.y) > maxDistToCamera) {
 				continue;
-			}
-
-			if (window.showSnapshots) {
 			}
 
 			const pos = offset(player.pos.x, player.pos.y)
@@ -215,7 +216,10 @@ window.render = () => {
 			ctx.textBaseline = 'middle'
 			ctx.font = `22px ${window.font}`
 			if (!player.dying) {
-				ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y + player.radius * 1.5)
+                if (hax.showId)
+                    ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y + player.radius * 1.5)
+                else
+                    ctx.fillText(`${player.name}`, pos.x, pos.y + player.radius * 1.5)
 			}
 
 			if (player.chatMessageTimer > 0) {
@@ -507,7 +511,7 @@ window.render = () => {
 		ctx.globalAlpha = overlayAlpha;
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.globalAlpha = 1;
-	} catch (err) {
-		document.body.innerHTML = err + 'from render' + JSON.stringify(leader);
-	}
+	//} catch (err) {
+	//	document.body.innerHTML = err + 'from render' + JSON.stringify(leader);
+	//}
 }	

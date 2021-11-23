@@ -2,6 +2,7 @@ const msgpack = require('msgpack-lite')
 const WebSocket = require('ws');
 const express = require('express');
 const path = require('path');
+const config = require('../shared/config.js');
 
 function setupServer() {
 	const wss = new WebSocket.Server({
@@ -9,7 +10,7 @@ function setupServer() {
 	});
     
 	const app = express();
-	const PORT = process.env.PORT || 5000;
+	const PORT = config.PORT;
 	const server = app.listen(PORT,
 		() => {
             console.log(`Server started on Port ${PORT}`)
@@ -35,7 +36,7 @@ function setupServer() {
 wss = setupServer()
 
 wss.on('connection', (socket, req) => {
-	con_to_real_server = new WebSocket("wss://darrows.herokuapp.com");
+	let con_to_real_server = new WebSocket(config.ADDRESS);
     
     socket.on('message', (data) => {
         con_to_real_server.send(data)
