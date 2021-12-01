@@ -55,6 +55,10 @@ commands = {
         "desc": "type something into chat",
         "fn": (a,c) => send({chat: a.join(' ')})
     },
+    "spam": {
+        "desc": "type something into chat 100x",
+        "fn": (a,c) => {for (let i = 0; i < 100; i++) send({chat: a.join(' ')})}
+    },
     "kickall": {
         "desc": "kicks ALL players",
         "fn": kick_all

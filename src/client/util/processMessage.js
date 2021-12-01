@@ -18,10 +18,10 @@ function processMessage(obj) {
 
 	if (obj.globalLeader != undefined) {
 		const score = obj.globalLeader.score;
-		const strScore = score <= 999 ? 
-			`${Math.floor(score)}` : 
+		const strScore = score <= 999 ?
+			`${Math.floor(score)}` :
 			`${Math.floor((score / 1000) * 100) / 100}k`
-		ref.highscore.innerText = `${obj.globalLeader.name} with ${strScore} AP`
+		ref.highscore.innerText = `Leader [ ${obj.globalLeader.name} with ${strScore} AP ]`
 	}
 
 	if (obj.type === 'init') {
@@ -36,6 +36,10 @@ function processMessage(obj) {
 		startTime = Date.now();
 	}
 
+	if (obj.saveName != undefined) {
+		localStorage.setItem('name', obj.saveName);
+	}
+
 	if (obj.arena != undefined) {
 		arena = obj.arena;
 	}
@@ -44,10 +48,26 @@ function processMessage(obj) {
 		obstacles = obj.obstacles;
 	}
 
+	if (obj.blocks != undefined) {
+		blocks = obj.blocks;
+		blockCanvas.width = arena.width;
+		blockCanvas.height = arena.height;
+		for (const { x, y, width, height, color } of blocks) {
+			blockCtx.fillStyle = color;
+			blockCtx.fillRect(x, y, width, height);
+		}
+	}
+
 	if (obj.arrows != undefined) {
 		for (const pack of obj.arrows) {
 			arrows[pack.id] = new CArrow(pack.data);
 		}
+	}
+
+	if (obj.version != undefined) {
+		// the version of the game 
+		ref.version.innerText = `[Alpha ${obj.version}]`;
+		window.version = obj.version;
 	}
 
 
@@ -77,7 +97,7 @@ function processMessage(obj) {
 	if (obj.type === 'chat') {
 		const div = document.createElement('div');
 		div.classList.add('chat-message');
-		div.innerHTML = `${obj.dev ? '<span class="rainbow">[DEV]</span> ': ''}${obj.name.safe()}: ${obj.msg.safe()}`;
+		div.innerHTML = `${obj.dev ? '<span class="rainbow">[DEV]</span> ' : ''}${obj.name.safe()}: ${obj.msg.safe()}`;
 		ref.chatMessageDiv.appendChild(div)
 		ref.chatMessageDiv.scrollTop = ref.chatMessageDiv.scrollHeight;
 	}
@@ -90,7 +110,7 @@ function processMessage(obj) {
 	}
 
 	if (obj.arrowHit != undefined) window.redness = 0.7;
-	if (obj.pung != undefined) ping = 
+	if (obj.pung != undefined) ping =
 		Math.round((Date.now() - obj.pung) / 2)
 
 	if (obj.type === "newPlayer") {
@@ -103,8 +123,31 @@ function processMessage(obj) {
 		delete players[obj.id]
 	}
 
+	if (obj.d != undefined && obj.d.round && obj.d.round.time) {
+		obj.round = obj.d.round;
+	}
+
 	if (obj.round) {
 		roundTime = obj.round.time;
+		if (obj.round.intermission != undefined) {
+			intermission = obj.round.intermission;
+			if (intermission) {
+				const msgs = [
+					...interMessages,
+				];
+				if (players[selfId] && players[selfId].characterName === 'Default') {
+					msgs.push(defaultMessage);
+					msgs.push(defaultMessage);
+				}
+				if (players[selfId] 
+					&& selfId === Object.keys(players)
+						.sort((a, b) => players[b].score - players[a].score)[0]) {
+					msgs.push(firstMessage);
+					msgs.push(firstMessage);
+				}
+				interMissionMessage = msgs[Math.floor(Math.random() * msgs.length)];
+			}
+		}
 	}
 
 	if (obj.arrowReset) {
@@ -126,9 +169,6 @@ function processMessage(obj) {
 
 		if (obj.spacing) serverSpacing = obj.spacing;
 
-		if (obj.d.round && obj.d.round.time) {
-			roundTime = obj.d.round.time;
-		}
 
 		for (const pack of obj.d.p) {
 			if (players[pack.id] == null) {
@@ -137,7 +177,7 @@ function processMessage(obj) {
 				players[pack.id].Snap(pack.data);
 			}
 		}
-		
+
 		for (const pack of obj.d.a) {
 			if (arrows[pack.id] == null) {
 				arrows[pack.id] = new CArrow(pack.data);
