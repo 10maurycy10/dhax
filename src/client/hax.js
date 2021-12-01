@@ -76,6 +76,10 @@ function hax_command(command,callback) {
             if (commands[pred]["fn"]) {
                 commands[pred]["fn"](command.split(' ').splice(1),callback)
             }
+        } else {
+            callback("that is not a valid command!")
+            callback("if you ment to post that in chat do:")
+            callback(`.say ${command}`)
         }
     }
     
@@ -92,9 +96,14 @@ function help(args,callback) {
     for (name of Object.keys(commands)) {
         callback(`${name}: ${commands[name].desc}`)
     }
+    callback("if you ment to post .help in chat do .say .help")
 }
 
 function sudo(args,callback) {
+    if (players[selfId].dev == true) {
+        callback("you are already DEV!")
+        return
+    }
     if (hax.devkey) {
         let oldname = players[selfId].name;
         
@@ -112,6 +121,7 @@ function sudo(args,callback) {
             send({chat: `/name ${oldname}`})
             
         send({chat: hax.devkey})
+        players[selfId].dev = false
     } else {
         callback("you must specify a dev key with .setdev")
     }
@@ -120,7 +130,7 @@ function sudo(args,callback) {
 function kick_all(a,c) {
     if (!(players[selfId].dev || hax.force)) {
         console.log(".kickall w/o dev! aborting.")
-        c("you have called kick all w/o dev")
+        c("you have called kickall w/o dev")
         c("this is a bad idea, run \".nodevcheck true\" to disable this warning")
         return;
     }
