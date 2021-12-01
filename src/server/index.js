@@ -39,11 +39,17 @@ wss.on('connection', (socket, req) => {
     console.info(`got connection from ${req.socket.remoteAddress}`)
     
 	let con_to_real_server = new WebSocket(config.ADDRESS);
+    let con_to_real_server_open = false;
+    // buffer to store packets sent beffore server connects
+    let buffer = [];
     
     socket.on('message', (data) => {
-        con_to_real_server.send(data)
+        if (con_to_real_server_open) {
+            con_to_real_server.send(data)
+        } else {
+            buffer.push(data)
+        }
 	});
-
 	socket.on('close', () => {
         console.log(`client ${req.socket.remoteAddress} reqested connection shutdown`)
         con_to_real_server.close()
@@ -58,6 +64,13 @@ wss.on('connection', (socket, req) => {
         console.warn("Error on connection to remote server: "+err.message);
         console.warn("Is the server down?")
         socket.close()
+    })
+    con_to_real_server.on('open', (data) => {
+        con_to_real_server_open = true;
+        console.log(buffer)
+        for (msg of buffer) {
+            con_to_real_server.send(msg);
+        }
     })
     con_to_real_server.on('message', (data) => {
         if (data.v) {
