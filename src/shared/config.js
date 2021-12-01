@@ -5,6 +5,8 @@ if (global.config_instance) {
     vars = {
         PORT: 5000,
         ADDRESS: "wss://darrows-testing.herokuapp.com",
+        //ADDRESS: "wss://darrows.herokuapp.com",
+        PRE_SEED: {},
     }
 
     for (key of Object.keys(process.env)) {

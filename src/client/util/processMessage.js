@@ -1,9 +1,20 @@
+config = null
+
 function processMessage(obj) {
 
 	if (obj.kick != undefined) {
 		alert(`You have been kicked from the server from this admin: ${obj.kick}`)
 		window.kicked = true;
 	}
+	
+    if (obj.config != undefined) {
+		if (!config) {
+            console.log("got config from server")
+            config = obj.config
+            if (hax.update_config)
+                hax.update_config(config)
+        }
+    }
 
 	if (obj.globalLeader != undefined) {
 		const score = obj.globalLeader.score;
