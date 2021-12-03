@@ -93,10 +93,12 @@ register_callback("config_update",(d) =>{
             data[i] = d.PRE_SEED[i]
         }
     }
+    return true
 })
 
 register_callback("gamestart",(d) =>{
     console.log("base!")
+    return true
 })
 
 })()
