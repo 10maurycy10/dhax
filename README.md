@@ -24,7 +24,7 @@ The vars must contain valid JSON, for example ``ADDRESS='"wss://darrows.herokuap
 
 - ``ADDRESS`` the address of the darrows server, this should start with ``wss://``
 
-- ``PRE_SEED`` config vars to be passed to the client. example PRE_SEED='{"devkey": "sampledevkey"}'
+- ``PRE_SEED`` config vars to be passed to the client. example ``PRE_SEED='{"devkey": "sampledevkey"}'``
 
 WARNING, someone that can connect to PORT could trivaly obtain the PRE_SEED data. 
 Make sure this is firewalled before adding sencitve data, such as devkeys.
