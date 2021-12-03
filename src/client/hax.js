@@ -1,68 +1,68 @@
 console.log("loading hax code")
 
-window.hax = {
+hax = {
     showId: false,
     antiscry: false,
     devkey: null,
     fakename: null,
     update_config: update_config,
     force: false,
+    modules: {},
+    callbacks: {}
 };
 
-let toggle = (name) => (args,callback) => {
-    hax[name] = !hax[name];
-    callback(`${name} is ${hax[name]}`);
+let toggle = (owner,name) => (args,callback) => {
+    owner = owner ?? hax.cmod
+    hax.modules[owner][name] = !hax.modules[owner][name];
+    callback(`${name} is ${hax.modules[owner][name]}`);
 }
 
-let value = (name) => (args,callback) => {
+let value = (owner,name) => (args,callback) => {
+    owner = owner ?? hax.cmod
     if (args.length > 0) {
-        hax[name] = args[0];
+        hax.modules[owner][name] = args[0];
     } else {
-        callback(`${name} is ${hax[name]}`);
+        callback(`${name} is ${hax.modules[owner][name]}`);
     }
 }
 
-commands = {
-    "help": {
-        "desc": "shows a list of commands.",
-        "fn": help
-    },
-    "nodevcheck": {
-        "desc": "disables checking for dev",
-        "fn": toggle("force")
-    },
-    "showid": {
-        "desc": "displays player ids without dev.",
-        "fn": toggle("showId")
-    },
-    "setdev": {
-        "desc": "allows entering a dev key",
-        "fn": value("devkey")
-    },
-    "setfakename": {
-        "desc": "allows setting a name to use with sudo",
-        "fn": value("fakename")
-    },
-    "sudo": {
-        "desc": "do a command as dev.",
-        "fn": sudo,
-    },
-    "antiscry": {
-        "desc": "hides fake arrows",
-        "fn": toggle("antiscry")
-    },
-    "say": {
-        "desc": "type something into chat",
-        "fn": (a,c) => send({chat: a.join(' ')})
-    },
-    "spam": {
-        "desc": "type something into chat 100x",
-        "fn": (a,c) => {for (let i = 0; i < 100; i++) send({chat: a.join(' ')})}
-    },
-    "kickall": {
-        "desc": "kicks ALL players",
-        "fn": kick_all
+commands = {}
+
+function register_command(name,desc,fn) {
+    commands[name] = {"desc": desc, "fn": fn, "module": hax.cmod}
+}
+
+function register_module(name) {
+	hax.modules[name] = {}
+	hax.cmod = name
+}
+
+function register_callback(eventname,fn) {
+    hax.callbacks[eventname].push(fn)
+}
+
+function callback(eventname) {
+    hax.callbacks[eventname] = []
+}
+
+// returns true if the event should be proccesed
+function call_callbacks(eventname,data) {
+    for (fn of hax.callbacks[eventname]) {
+        if (!fn(data)) {
+            return false
+        }
     }
+    return true
+}
+
+function get_mod_data(mod) {
+	return hax.modules[mod]
+}
+
+function update_config(conf) {
+    if (conf.PRE_SEED)
+        for (i of Object.keys(conf.PRE_SEED))
+            hax[i] = conf.PRE_SEED[i]
 }
 
 // returns true if the command is a command
@@ -90,57 +90,5 @@ function hax_command(command,callback) {
     return true;
 }
 
-function update_config(conf) {
-    if (conf.PRE_SEED)
-        for (i of Object.keys(conf.PRE_SEED))
-            hax[i] = conf.PRE_SEED[i]
-}
+callback("render_player_name")
 
-function help(args,callback) {
-    for (name of Object.keys(commands)) {
-        callback(`${name}: ${commands[name].desc}`)
-    }
-    callback("if you ment to post .help in chat do .say .help")
-}
-
-function sudo(args,callback) {
-    if (players[selfId].dev == true) {
-        callback("you are already DEV!")
-        return
-    }
-    if (hax.devkey) {
-        let oldname = players[selfId].name;
-        
-        send({chat: hax.devkey})
-        
-        if (hax.fakename !== null)
-            send({chat: `/name ${hax.fakename}`})
-
-        // fix for commnds that check for dev
-        players[selfId].dev = true
-        if (!hax_command(args.join(' '),callback))
-            send({chat: args.join(' ')})
-        
-        if (hax.fakename !== null)
-            send({chat: `/name ${oldname}`})
-            
-        send({chat: hax.devkey})
-        players[selfId].dev = false
-    } else {
-        callback("you must specify a dev key with .setdev")
-    }
-}
-
-function kick_all(a,c) {
-    if (!(players[selfId].dev || hax.force)) {
-        console.log(".kickall w/o dev! aborting.")
-        c("you have called kickall w/o dev")
-        c("this is a bad idea, run \".nodevcheck true\" to disable this warning")
-        return;
-    }
-    for (id of Object.keys(players)) {
-        if (id != selfId) {
-            send({chat: `/kick ${id}`})
-        }
-    }
-}

@@ -1,4 +1,3 @@
-
 window.render = () => {
 	try {
 		// ctx.globalAlpha = 1;
@@ -41,11 +40,10 @@ window.render = () => {
 				ctx.fillStyle = 'black';
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';
-                //if (hax.showId) {
-                    ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y - player.radius * 1.5)
-                //}  else {
-                //    ctx.fillText(`${player.name}`, pos.x, pos.y - player.radius * 1.5)
-                //}
+                let d = {playerid: playerId, str: player.name}
+                call_callbacks("render_player_name",d)
+                ctx.fillText(d.str, pos.x, pos.y - player.radius * 1.5)
+                
             }
 			ctx.globalAlpha = 1
 		}
@@ -330,11 +328,10 @@ window.render = () => {
 			ctx.textBaseline = 'middle'
 			ctx.font = `22px ${window.font}`
 			if (!player.dying) {
-                if (hax.showId)
-                    ctx.fillText(`[${playerId}] ${player.name}`, pos.x, pos.y + player.radius * 1.5)
-                else
-                    ctx.fillText(`${player.name}`, pos.x, pos.y + player.radius * 1.5)
-			}
+                let d = {playerid: playerId, str: player.name}
+                call_callbacks("render_player_name",d)
+                ctx.fillText(d.str, pos.x, pos.y + player.radius * 1.5)
+            }
 
 			if (player.chatMessageTimer > 0) {
 				ctx.globalAlpha = player.chatMessageTimer > 0.5 ? 1 : (player.chatMessageTimer * 2) / 1;

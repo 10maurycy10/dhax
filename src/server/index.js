@@ -67,7 +67,6 @@ wss.on('connection', (socket, req) => {
     })
     con_to_real_server.on('open', (data) => {
         con_to_real_server_open = true;
-        console.log(buffer)
         for (msg of buffer) {
             con_to_real_server.send(msg);
         }
