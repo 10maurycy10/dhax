@@ -1,5 +1,9 @@
 # module documentation
 
+Modules should be in ``src/mod``.
+
+You should also edit ``src/client/index.html`` to include the file.
+
 ## callbacks
 
 A callback is a function called on a particular event.
