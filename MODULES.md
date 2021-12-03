@@ -55,3 +55,21 @@ register_module("hello")
 
 register_command("hello", "displays hello world!", (a, c) => c("Hello, World!"))
 ```
+
+## list of callbacks
+
+- gamestart
+
+called w/ no data when join game button is clicked
+
+- render_player_name {playerid, str}
+
+called before rendering a player name, a callback may modify ``str`` to chainge what is displayed
+
+returning false will not stop the name from displaying
+
+- packet_rx
+
+called when a packet is receved form the server.
+
+returning false will prevent packet proccesing
