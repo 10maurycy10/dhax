@@ -1,7 +1,12 @@
 config = null
 
+callback("packet_rx")
+
 function processMessage(obj) {
 
+    if (!call_callback("packet_rx",obj))
+        return
+    
 	if (obj.kick != undefined) {
 		alert(`You have been kicked from the server from this admin: ${obj.kick}`)
 		window.kicked = true;
