@@ -1,5 +1,7 @@
 function startGame() {
-	run(); // starts event loop
+    call_callbacks("gamestart",{})
+    
+    run(); // starts event loop
 
 	window.addEventListener("keydown", trackKeys);
 	window.addEventListener("keyup", trackKeys);

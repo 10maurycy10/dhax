@@ -1,12 +1,8 @@
 console.log("loading hax code")
 
 hax = {
-    showId: false,
-    antiscry: false,
-    devkey: null,
-    fakename: null,
     update_config: update_config,
-    force: false,
+    config: null,
     modules: {},
     callbacks: {}
 };
@@ -59,10 +55,10 @@ function get_mod_data(mod) {
 	return hax.modules[mod]
 }
 
+callback("config_update")
 function update_config(conf) {
-    if (conf.PRE_SEED)
-        for (i of Object.keys(conf.PRE_SEED))
-            hax[i] = conf.PRE_SEED[i]
+    hax.config = conf
+    call_callbacks("config_update",conf)
 }
 
 // returns true if the command is a command
@@ -91,4 +87,5 @@ function hax_command(command,callback) {
 }
 
 callback("render_player_name")
+callback("gamestart")
 

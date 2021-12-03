@@ -84,4 +84,19 @@ register_callback("render_player_name",(d) => {
      }
 })
 
+register_callback("config_update",(d) =>{
+    let data = get_mod_data("base");
+    let props = {"devkey": true, "antiscry": true, "fakename": true}
+    console.log(d)
+    for (i of Object.keys(d.PRE_SEED)) {
+        if (props[i]) {
+            data[i] = d.PRE_SEED[i]
+        }
+    }
+})
+
+register_callback("gamestart",(d) =>{
+    console.log("base!")
+})
+
 })()
