@@ -35,4 +35,8 @@ Visit the printed url in a browser, and then you should be able to play darrows 
 
 Enter ``.help`` in the chat to get a list of commands you can use.
 
+## developing
+
+the documentation for modules is in MODULES.md
+
 NOTE: ``.say [some text]``  is required to post a message begning with ``.`` in chat.
