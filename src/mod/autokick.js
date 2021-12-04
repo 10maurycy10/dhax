@@ -6,15 +6,9 @@ let data = get_mod_data("autokick")
 
 data.banned_names = Object.create(null)
 
-//data.banned_chats = Object.create(null)
-
 register_command("ban","autokick a player by name",(a,c) => data.banned_names[a[0]] = true)
 
 register_command("unban","stop autokicking a player by name",(a,c) => data.banned_names[a[0]] = false)
-
-//register_command("banchat","TODO",(a,c) => data.banned_chats[a[0]] = true)
-
-//register_command("unbanchat","TODO",(a,c) => data.banned_chats[a[0]] = true)
 
 register_callback("player_update",(d) =>{
     if (d.data.name) {

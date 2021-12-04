@@ -8,9 +8,9 @@ register_command("nodevcheck","disable checking for dev before kicking",toggle("
 
 register_command("showid","displays player ids",toggle("base","showid"))
 
-register_command("setdev","allows entering a dev key",value("base","devkey"))
+register_command("setdev","allows entering a dev key",value("shared","devkey"))
 
-register_command("setfakename","allows setting a name used for sudo",value("base","fakename"))
+register_command("setfakename","allows setting a name used for sudo",value("shared","fakename"))
 
 register_command("sudo","run a command as dev",sudo)
 
@@ -32,28 +32,29 @@ function help(args,callback) {
 }
 
 function sudo(args,callback) {
+    let sdata = get_mod_data("shared")
     let data = get_mod_data("base")
     if (players[selfId].dev == true) {
         callback("you are already DEV!")
         return
     }
-    if (data.devkey) {
+    if (sdata.devkey) {
         let oldname = players[selfId].name;
         
-        send({chat: data.devkey})
+        send({chat: sdata.devkey})
         
-        if (data.fakename !== null)
-            send({chat: `/name ${data.fakename}`})
+        if (sdata.fakename !== null)
+            send({chat: `/name ${sdata.fakename}`})
 
         // fix for commnds that check for dev
         players[selfId].dev = true
         if (!hax_command(args.join(' '),callback))
             send({chat: args.join(' ')})
         
-        if (data.fakename !== null)
+        if (sdata.fakename !== null)
             send({chat: `/name ${oldname}`})
             
-        send({chat: data.devkey})
+        send({chat: sdata.devkey})
         players[selfId].dev = false
     } else {
         callback("you must specify a dev key with .setdev")

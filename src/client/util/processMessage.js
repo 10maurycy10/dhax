@@ -100,6 +100,8 @@ function processMessage(obj) {
 	// }
 
 	if (obj.type === 'chat') {
+        if (!call_callbacks("player_chat",obj))
+            return
 		const div = document.createElement('div');
 		div.classList.add('chat-message');
 		div.innerHTML = `${obj.dev ? '<span class="rainbow">[DEV]</span> ' : ''}${obj.name.safe()}: ${obj.msg.safe()}`;
@@ -126,7 +128,7 @@ function processMessage(obj) {
 	}
 
 	if (obj.type === 'leave') {
-        if (!call_callbacks("player_leve",{id: obj.id}))
+        if (!call_callbacks("player_leave",{id: obj.id}))
             return
 		if (obj.id === selfId) dead = true;
 		delete players[obj.id]
