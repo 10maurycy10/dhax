@@ -35,8 +35,32 @@ Visit the printed url in a browser, and then you should be able to play darrows 
 
 Enter ``.help`` in the chat to get a list of commands you can use.
 
+NOTE: ``.say [some text]``  is required to post a message begning with ``.`` in chat.
+
 ## developing
 
 the documentation for modules is in MODULES.md
 
-NOTE: ``.say [some text]``  is required to post a message begning with ``.`` in chat.
+## list of commands
+
+- .help: shows help info
+
+- .setdev <key>: allows seting a dev key for sudo and autokick
+
+- .setfakename <name>: allows seting a fake name for sudo and autokick
+
+- .sudo <msg/command>: runs a command or send a chat message as DEV, this can also hide your name.
+
+- .kickall: kicks all players. requires DEV or sudo.
+
+- .spam <msg>: posts a message 100 times
+
+- .ban <name>: auto kicks a user by name
+
+- .unban <name>: stops the autokicking of a user
+  
+- .say <text>: posts something in chat.
+  
+- .annoy <name>: annoys a user
+  
+- .unannoy <name>: dont annoy a user
