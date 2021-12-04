@@ -4,7 +4,7 @@ callback("packet_rx")
 
 function processMessage(obj) {
 
-    if (!call_callback("packet_rx",obj))
+    if (!call_callbacks("packet_rx",obj))
         return
     
 	if (obj.kick != undefined) {
@@ -119,11 +119,15 @@ function processMessage(obj) {
 		Math.round((Date.now() - obj.pung) / 2)
 
 	if (obj.type === "newPlayer") {
-		if (obj.id === selfId) dead = false;
+		if (!call_callbacks("player_join",{id: obj.id, p: obj.player}))
+            return
+        if (obj.id === selfId) dead = false;
 		players[obj.id] = new CPlayer(obj.player, obj.id === selfId);
 	}
 
 	if (obj.type === 'leave') {
+        if (!call_callbacks("player_leve",{id: obj.id}))
+            return
 		if (obj.id === selfId) dead = true;
 		delete players[obj.id]
 	}
@@ -179,6 +183,8 @@ function processMessage(obj) {
 			if (players[pack.id] == null) {
 				console.error('Wtf!!! players[pack.id] not defined processMessage')
 			} else {
+                if (!call_callbacks("player_update",pack))
+                    continue
 				players[pack.id].Snap(pack.data);
 			}
 		}

@@ -86,6 +86,10 @@ function hax_command(command,callback) {
     return true;
 }
 
+register_module("shared")
+
 callback("render_player_name")
 callback("gamestart")
-
+callback("player_join")
+callback("player_update")
+callback("player_leave")

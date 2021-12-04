@@ -73,3 +73,21 @@ returning false will not stop the name from displaying
 called when a packet is receved form the server.
 
 returning false will prevent packet proccesing
+
+- player_join {id, p}
+
+trigered when a player goins (p is player data)
+
+if false, player not joined
+
+- player_leave {id, p}
+
+trigered when a player leaves
+
+if false, player not deleted
+
+- player_updata {id, data}
+
+trigered when a player data updates
+
+if false, update discarded

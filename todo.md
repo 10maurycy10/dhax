@@ -1,7 +1,7 @@
 # TODO
 
-Add loadable modules to minimize changes to client codebase [Y]
+Add loadable modules to minimize changes to client codebase [X]
 
-fix pre seed
+fix pre seed [X]
 
 
