@@ -21,13 +21,13 @@ function processMessage(obj) {
         }
     }
 
-	if (obj.globalLeader != undefined) {
-		const score = obj.globalLeader.score;
-		const strScore = score <= 999 ?
-			`${Math.floor(score)}` :
-			`${Math.floor((score / 1000) * 100) / 100}k`
-		ref.highscore.innerText = `Leader [ ${obj.globalLeader.name} with ${strScore} AP ]`
-	}
+	// if (obj.globalLeader != undefined) {
+	// 	const score = obj.globalLeader.score;
+	// 	const strScore = score <= 999 ?
+	// 		`${Math.floor(score)}` :
+	// 		`${Math.floor((score / 1000) * 100) / 100}k`
+	// 	ref.highscore.innerText = `Leader [ ${obj.globalLeader.name} with ${strScore} AP ]`
+	// }
 
 	if (obj.type === 'init') {
 		selfId = obj.selfId;
@@ -71,7 +71,7 @@ function processMessage(obj) {
 
 	if (obj.version != undefined) {
 		// the version of the game 
-		ref.version.innerText = `[Alpha ${obj.version}]`;
+		// ref.version.innerText = `[Alpha ${obj.version}]`;
 		window.version = obj.version;
 	}
 
