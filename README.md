@@ -64,3 +64,8 @@ the documentation for modules is in MODULES.md
 - .annoy <name>: annoys a user
   
 - .unannoy <name>: dont annoy a user
+
+- .block <name>: hide chat messages from a user
+  
+- .unblock <name>: stop blocking messages
+  
