@@ -1,7 +1,5 @@
 config = null
 
-callback("packet_rx")
-
 function processMessage(obj) {
 
     if (!call_callbacks("packet_rx",obj))

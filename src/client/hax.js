@@ -87,11 +87,12 @@ function hax_command(command,callback) {
 }
 
 register_module("shared")
-
 callback("set_full_screen")
 callback("render_player_name")
 callback("gamestart")
 callback("player_join")
 callback("player_chat")
+callback("packet_rx")
 callback("player_update")
 callback("player_leave")
+callback("send_input")

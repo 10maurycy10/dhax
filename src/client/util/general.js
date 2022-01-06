@@ -7,7 +7,9 @@ function getScale() {
 }
 
 function sendInput() {
-	send({ input: true, data: input });
+    pkt = { input: true, data: input };
+    if (call_callbacks("send_input",pkt))
+        send(pkt);
 }
 
 function fullscreen() {
