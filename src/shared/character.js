@@ -1,5 +1,4 @@
 
-
 const Character = {
 	Default: {
 		Color: '#292929',
@@ -89,21 +88,21 @@ const Character = {
 			desc: 'Flanks opponents via teleportation',
 		}
 	},
-	// Crescent: {
-	// 	Color: '#7325b3',
-	// 	ArrowCdColor: '#8956b3',
-	// 	Name: 'Crescent',
-	// 	Passive: 'Move-Fast-Slow-Aim',
-	// 	Ability: { 
-	// 		name: 'Gravity',
-	// 	},
-	// 	Html: {
-	// 		color: '#7325b3',
-	// 		nameColor: '#7325b3',
-	// 		name: 'Crescent',
-	// 		desc: 'Gravitate arrows towards you',
-	// 	},
-	// },
+	Crescent: {
+		Color: '#7325b3',
+		ArrowCdColor: '#8956b3',
+		Name: 'Crescent',
+		Passive: 'Move-Fast-Slow-Aim',
+		Ability: { 
+			name: 'Gravity',
+		},
+		Html: {
+			color: '#7325b3',
+			nameColor: '#7325b3',
+			name: 'Crescent',
+			desc: 'Gravitate arrows towards you',
+		},
+	},
 //   ZeroTix: {
 // 		Color: '#fce0bd',
 //  		ArrowCdColor: '#fce0bd',

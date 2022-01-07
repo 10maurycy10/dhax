@@ -1,5 +1,7 @@
 register_module("autoaim")
 
+void (() => {
+
 loading = true
 arrow_direction = "arrowLeft"
 aim_delay = 0
@@ -8,15 +10,20 @@ players_input = null
 time_loading = 0
 aim_cycles = 0
 aim_time = 0
+is_active = false
 dbg = (x) => {}
 //dbg = console.log
 
+register_command("aim","enable aim-bot",(a,c) => {
+    is_active = !is_active;
+    c(`aimbot is ${is_active}`);
+})
 
 aimconfig = {
     ARROWING_ANGULAR_SPEED: 2.9,
     SERVER_TICKS_MS: 16,
-    MIN_AIM_CYCLES: 16,
-    MIN_AIM_TIME: 10,
+    MIN_AIM_CYCLES: 6,
+    MIN_AIM_TIME: 30,
 }
 
 function update_input() {
@@ -61,7 +68,7 @@ function update_aim(target_x, target_y, has_target) {
     
     dbg(error,angle_per_trip)
     
-    if (Math.abs(error) < (angle_per_trip*3)) {
+    if (Math.abs(error) < (angle_per_trip+100000)) {
         
         dbg("attempting early relese!")
         
@@ -94,16 +101,19 @@ function update_aim(target_x, target_y, has_target) {
 
 // block all user inputs
 register_callback("send_input",(d) =>{
+    if (!is_active) return true;
     players_input = d.data;
     update_input()
     return false
 })
 
 function update_info() {
-    self = players[selfId]
+    //if (window.players)
+        self = players[selfId]
 }
 
 register_callback("packet_rx",(obj) => {
+    if (!is_active) return true;
     if (obj.d) {
         cplayers = {}
         for (const id of Object.keys(players)) {
@@ -151,4 +161,9 @@ register_callback("packet_rx",(obj) => {
     return true;
 })
      
-setInterval(() => update_info(), 100)
+setInterval(() => {
+    update_info();
+    if (window.serverTickMs)
+        aimconfig.SERVER_TICKS_MS = serverTickMs
+}, 100)
+})()

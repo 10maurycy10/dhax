@@ -202,7 +202,6 @@ function run(time =  0) {
 		if (Math.abs(targetX - xoff) < 0.5) xoff = targetX;
 		if (Math.abs(targetY - yoff) < 0.5) yoff = targetY;
 	}
-
 	render();
 	requestAnimationFrame(run);
 }

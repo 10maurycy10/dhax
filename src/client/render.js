@@ -135,6 +135,8 @@ function drawPlayers() {
 	for (const playerId of Object.keys(players)) {
 		const player = players[playerId];
 
+        //console.log(player)
+        
 		const maxDistToCamera = 1000;
 		if (Math.abs(player.pos.x - camera.x) > maxDistToCamera ||
 			Math.abs(player.pos.y - camera.y) > maxDistToCamera) {
@@ -605,3 +607,5 @@ function drawAbilityCooldown() {
 		ctx.drawImage(abilityCanvas, canvas.width / 2 - 30, canvas.height - 60, 60, 60)
 	}
 }
+
+//window.render = () => {}
