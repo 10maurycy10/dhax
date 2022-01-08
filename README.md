@@ -20,11 +20,17 @@ The vars must contain valid JSON, for example ``ADDRESS='"wss://darrows.herokuap
 
 ### list of vars (sever side)
 
-- ``PORT`` the port number to bind to.
+- ``PORT`` the port number to bind to. default = ``5000``
 
-- ``ADDRESS`` the address of the darrows server, this should start with ``wss://``
+- ``ADDRESS`` the address of the darrows server, this should start with ``wss://`` default = ``wss://darrows.herokuapp.com``
 
 - ``PRE_SEED`` config vars to be passed to the client. example ``PRE_SEED='{"devkey": "sampledevkey"}'``
+
+- ``GAMEADDRESS`` url of game not neaded for now.
+
+- ``PRE_SEED`` config vars to be passed to the client. example ``PRE_SEED='{"devkey": "sampledevkey"}'``
+
+- ``IPLIMITBYPASS`` try to bypass ip limits. default = ``true`` . (TIP: point Openbots at ws://localhost:5000 while running dhax to bypass limit for bots)
 
 WARNING, someone that can connect to PORT could trivaly obtain the PRE_SEED data. 
 Make sure this is firewalled before adding sencitve data, such as devkeys.
