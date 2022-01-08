@@ -41,9 +41,11 @@ NOTE: ``.say [some text]``  is required to post a message begning with ``.`` in 
 
 the documentation for modules is in MODULES.md
 
-## list of commands [by defauld]
+## list of commands [by default]
 
 - .help: shows help info
+
+- antiscry: hides fake arrows.
 
 - .setdev <key>: allows seting a dev key for sudo and autokick
 
@@ -69,3 +71,4 @@ the documentation for modules is in MODULES.md
   
 - .unblock <name>: stop blocking messages
   
+- .aim: toggle aim bot (fairly basic at this point)
