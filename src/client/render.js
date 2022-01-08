@@ -87,7 +87,7 @@ function drawArrows() {
 	for (const arrowId of Object.keys(arrows)) {
 		const { lerpAngle, radius, life, alpha, parent, fake, server } = arrows[arrowId]
 		const { x, y } = arrows[arrowId].pos;
-		ctx.globalAlpha = fake && parent === selfId ? alpha * 0.5 : alpha; // life 
+		ctx.globalAlpha = fake && (parent === selfId || get_mod_data("base").antiscry) ? alpha * 0.5 : alpha; // life 
 		const pos = offset(x, y);
 
 		ctx.translate(pos.x, pos.y);

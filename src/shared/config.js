@@ -7,6 +7,10 @@ if (global.config_instance) {
         //ADDRESS: "wss://darrows-testing.herokuapp.com",
         ADDRESS: "wss://darrows.herokuapp.com",
         PRE_SEED: {},
+        // the game's url, this allows faking a "orgin" header to server.
+        GAMEADDRESS: "https://darrows.herokuapp.com",
+        // spoof x-forwarder-for header to bypass ip limits. this works if server is _not_ behind a reverse proxy/load balencer. (works on heroku for some reson)
+        IPLIMITBYPASS: true,
     }
 
     for (key of Object.keys(process.env)) {

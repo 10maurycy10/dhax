@@ -39,7 +39,8 @@ function startGame() {
 			uploadByteDisplay = uploadByteCount;
 			uploadByteCount = 0;
 		}, 1000);
-		send({ joinE: true, character: Characters[characterIndex] })
+		//send({ joinE: true, character: Characters[characterIndex] })
+        send({ joinE: true, character: null })
 		if (localStorage.getItem('name') != null) {
 			send({
 				chat: `/name ${localStorage.getItem('name')}`

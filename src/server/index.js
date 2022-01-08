@@ -1,8 +1,27 @@
 const msgpack = require('msgpack-lite')
+const uuid = require('uuid')
 const WebSocket = require('ws');
 const express = require('express');
 const path = require('path');
 const config = require('../shared/config.js');
+
+fakeheaders = {
+    // is pretending to be linux a good idea?
+    'user-agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0',
+    'accept': '*/*',
+    'accept-language': 'en-US,en;q=0.5',
+    'accept-encoding': 'gzip, deflate',
+    'sec-websocket-version': '13',
+    origin: config.GAMEADDRESS,
+    'sec-websocket-extensions': 'permessage-deflate',
+    'connection': 'keep-alive, Upgrade',
+    'sec-fetch-dest': 'websocket',
+    'sec-fetch-mode': 'websocket',
+    'sec-fetch-site': 'same-origin',
+    'pragma': 'no-cache',
+    'cache-control': 'no-cache',
+    'upgrade': 'websocket'
+}
 
 function setupServer() {
 	const wss = new WebSocket.Server({
@@ -40,8 +59,11 @@ wss = setupServer()
 
 wss.on('connection', (socket, req) => {
     console.info(`got connection from ${req.socket.remoteAddress}`)
-    
-	let con_to_real_server = new WebSocket(config.ADDRESS);
+    //let con_to_real_server = WebSocket.client.connect(config.ADDRESS,config.GAMEADDRESS,fakeheaders)
+    let conheaders = Object.create(fakeheaders);
+    if (config.IPLIMITBYPASS)
+        conheaders['x-forwarded-for'] = uuid.v4();
+	let con_to_real_server = new WebSocket(config.ADDRESS,["ws","wss"],{headers: conheaders});
     let con_to_real_server_open = false;
     // buffer to store packets sent beffore server connects
     let buffer = [];
