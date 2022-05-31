@@ -104,9 +104,20 @@ function drawArrows() {
 			ctx.fillStyle = '#780000'
 		}
 
+		if (players[arrows[arrowId].parent]?.characterName === 'Vice' && life > 2.75
+		  && players[arrows[arrowId].parent]?.abilityCd <= 0) {
+			ctx.strokeStyle = 'black';
+			ctx.lineWidth = 4;
+		}
+
 		ctx.beginPath();
 		ctx.rect(-6.25, -18.75, 12.5, 37.5);
 		ctx.fill()
+
+		if (players[arrows[arrowId].parent]?.characterName === 'Vice' && life > 2.75
+		   && players[arrows[arrowId].parent]?.abilityCd <= 0) {
+			ctx.stroke();
+		}
 
 		ctx.rotate(-(lerpAngle + Math.PI / 2));
 		ctx.translate(-pos.x, -pos.y);
@@ -135,12 +146,22 @@ function drawPlayers() {
 	for (const playerId of Object.keys(players)) {
 		const player = players[playerId];
 
-        //console.log(player)
-        
-		const maxDistToCamera = 1000;
+		renderPlayerEntity(player, playerId);
+
+		if (player.clones != null && Array.isArray(player.clones)) {
+			for (const clone of player.clones) {
+				// console.log(clone)
+				renderPlayerEntity(new CPlayer(clone), clone.id)
+			}
+		}
+	}
+}
+
+function renderPlayerEntity(player, playerId) {
+	const maxDistToCamera = 1000;
 		if (Math.abs(player.pos.x - camera.x) > maxDistToCamera ||
 			Math.abs(player.pos.y - camera.y) > maxDistToCamera) {
-			continue; // does not draw players that are not within view
+			return; // does not draw players that are not within view
 		}
 
 		const pos = offset(player.pos.x, player.pos.y)
@@ -184,23 +205,33 @@ function drawPlayers() {
 			}
 		}
 
+		if (player.characterName === 'Harpazo') {
+			ctx.globalAlpha = 0.15;
+			ctx.fillStyle = '#de8c2f';
+			ctx.beginPath();
+			ctx.arc(pos.x, pos.y, 300, 0, Math.PI * 2);
+			ctx.fill();
+			ctx.globalAlpha = 1;
+		}
+
 		if (player.characterName === 'Flank'
 			&& !intermission
 			&& player.abilityCd <= 0
 			&& player.arrowing > 0
-			&& !player.passive
-			&& playerId === selfId) {
-			ctx.globalAlpha = 0.15;
-			ctx.fillStyle = '#059905';
-			ctx.beginPath();
-			ctx.arc(pos.x, pos.y, 400, 0, Math.PI * 2);
-			ctx.fill();
+			&& !player.passive) {
+			if (playerId === selfId) {
+				ctx.globalAlpha = 0.15;
+				ctx.fillStyle = '#059905';
+				ctx.beginPath();
+				ctx.arc(pos.x, pos.y, 400, 0, Math.PI * 2);
+				ctx.fill();
+			}
 
 			ctx.fillStyle = '#024d02';
 			let shortestDistance = null;
 			let otherId = null;
 			for (const pi of Object.keys(players)) {
-				if (pi === selfId) continue;
+				if (pi === playerId) continue;
 				const other = players[pi];
 				if (other.timer > 0 || (other.characterName === 'Scry' && !other.showAim)) {
 					continue;
@@ -229,6 +260,11 @@ function drawPlayers() {
 				ctx.beginPath();
 				ctx.arc(destPos.x, destPos.y, player.radius, 0, Math.PI * 2);
 				ctx.fill()
+				// ctx.fillStyle = 'black';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle'
+				ctx.font = `22px ${window.font}`
+				ctx.fillText(`${player.name}`, destPos.x, destPos.y + player.radius * 1.5)
 			}
 			ctx.globalAlpha = 1;
 		}
@@ -241,9 +277,9 @@ function drawPlayers() {
 			);
 
 			ctx.globalAlpha = 0.4;
-			ctx.fillStyle = '#330e00'
+			ctx.fillStyle = '#cf3a02'
 			if (player.arrowing > 0 && !player.changedLastTime) {
-				ctx.fillStyle = '#cf3a02'
+				ctx.fillStyle = '#330e00'
 			}
 			ctx.beginPath();
 			ctx.arc(dashPos.x, dashPos.y, player.radius, 0, Math.PI * 2);
@@ -328,7 +364,6 @@ function drawPlayers() {
             call_callbacks("render_player_name",obj)
             ctx.fillText(`${obj.str}`, pos.x, pos.y + player.radius * 1.5)
 		}
-	}
 }
 
 function drawHits() {

@@ -164,6 +164,7 @@ body {
 	padding: 5px;
 	caret-color: white;
 	background: transparent;
+	
 	font-family: 'Inter', sans-serif;
 }
 
@@ -172,6 +173,8 @@ body {
 	font-size: 1rem;
 	background: transparent;
 	margin: 2px;
+	overflow-wrap: break-word;
+/* 	overflow-y: auto; */
 }
 
 .chat::placeholder {
