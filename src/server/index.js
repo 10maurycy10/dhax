@@ -63,6 +63,7 @@ wss.on('connection', (socket, req) => {
     let conheaders = Object.create(fakeheaders);
     if (config.IPLIMITBYPASS)
         conheaders['x-forwarded-for'] = uuid.v4();
+	console.log(conheaders)
 	let con_to_real_server = new WebSocket(config.ADDRESS,["ws","wss"],{headers: conheaders});
     let con_to_real_server_open = false;
     // buffer to store packets sent beffore server connects
